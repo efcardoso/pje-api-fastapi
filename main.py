@@ -4,7 +4,6 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="Consulta Comunica PJe")
 
-# Permitir chamadas de qualquer origem (útil para o GPT personalizado)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -14,18 +13,20 @@ app.add_middleware(
 
 @app.get("/consultar")
 def consultar_comunicacoes(
-    oab: str = Query(..., description="Número da OAB sem pontos ou barras"),
+    numeroOab: str = Query(..., description="Número da OAB (ex: 443447)"),
+    ufOab: str = Query(..., description="UF da OAB (ex: SP)"),
     dataInicio: str = Query(..., description="Data inicial no formato YYYY-MM-DD"),
     dataFim: str = Query(..., description="Data final no formato YYYY-MM-DD")
 ):
-    url = "https://comunica.pje.jus.br/api/v1/comunicacao"
+    url = "https://comunicaapi.pje.jus.br/api/v1/comunicacao"
     params = {
-        "oab": oab,
-        "dataInicio": dataInicio,
-        "dataFim": dataFim
+        "numeroOab": numeroOab,
+        "ufOab": ufOab,
+        "dataDisponibilizacaoInicio": dataInicio,
+        "dataDisponibilizacaoFim": dataFim
     }
     try:
-        response = requests.get(url, params=params, timeout=10)
+        response = requests.get(url, params=params, timeout=20)
         response.raise_for_status()
         dados = response.json()
         return {
