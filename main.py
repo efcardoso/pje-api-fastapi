@@ -25,18 +25,16 @@ def consultar_comunicacoes(
         "dataDisponibilizacaoInicio": dataInicio,
         "dataDisponibilizacaoFim": dataFim
     }
-    try:
-        headers = {
-    "Authorization": "Bearer teste"
-}
-
-response = requests.get(url, params=params, headers=headers, timeout=20)
-
-        response.raise_for_status()
-        dados = response.json()
-        return {
-            "total": len(dados),
-            "resultados": dados
-        }
-    except requests.exceptions.RequestException as e:
-        return {"erro": str(e)}
+   try:
+    headers = {
+        "Authorization": "Bearer teste"
+    }
+    response = requests.get(url, params=params, headers=headers, timeout=20)
+    response.raise_for_status()
+    dados = response.json()
+    return {
+        "total": len(dados),
+        "resultados": dados
+    }
+except requests.exceptions.RequestException as e:
+    return {"erro": str(e)}
