@@ -26,7 +26,12 @@ def consultar_comunicacoes(
         "dataDisponibilizacaoFim": dataFim
     }
     try:
-        response = requests.get(url, params=params, timeout=20)
+        headers = {
+    "Authorization": "Bearer teste"
+}
+
+response = requests.get(url, params=params, headers=headers, timeout=20)
+
         response.raise_for_status()
         dados = response.json()
         return {
